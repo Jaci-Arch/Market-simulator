@@ -2,11 +2,11 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, initial-scale=1, maximum-scale=1"> <!-- 允许页面自适应缩放 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, initial-scale=1, maximum-scale=1">
     <title>Market-simulator 市场模拟器</title>
     <style>
         body {
-            background-color: #f0f7ff;
+            background-color: #f0f7ff; /* 页面背景颜色 */
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -78,23 +78,21 @@
         }
 
         .summary {
-            margin-top: 20px;
+            margin-top: 10px; /* 减小顶部间距 */
             font-size: 1.2em;
-            padding: 10px;
+            padding: 20px;
+            background-color: #f0f7ff; /* 和背景颜色一致 */
         }
 
         .summary-1 {
-            background-color: #d9f2e6; /* 绿色背景 */
             border: 1px solid #ccc;
         }
 
         .summary-2 {
-            background-color: #f2e6d9; /* 棕色背景 */
             border: 1px solid #ccc;
         }
 
         .summary-3 {
-            background-color: #d9d9f2; /* 蓝色背景 */
             border: 1px solid #ccc;
         }
 
@@ -276,7 +274,7 @@
             tableHTML += "<tr><th colspan='2'>总计</th><th>¥" + totalProductionCost.toFixed(2) + "</th><th>¥" + totalPurchaseCost.toFixed(2) + "</th></tr>";
             tableHTML += "</table>";
 
-            // 显示销售价格和利润率信息，分为生产模式和进货模式，使用不同的底色
+            // 显示销售价格和利润率信息，分为生产模式和进货模式，使用不同的背景颜色
             var summaryHTML = "<div class='summary summary-1'><strong>销售价格：</strong>¥" + salesPrice.toFixed(2) + "<br>";
             summaryHTML += "<strong>直接进货价：</strong>¥" + wholesalePrice.toFixed(2) + "</div><hr>";
 
@@ -299,4 +297,5 @@
 
 </body>
 </html>
+
 

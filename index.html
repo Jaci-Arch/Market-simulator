@@ -29,7 +29,7 @@
         }
         table {
             border-collapse: collapse;
-            width: 60%;
+            width: 80%;
             margin-top: 20px;
         }
         th, td {
@@ -40,14 +40,21 @@
         th {
             background-color: #f2f2f2;
         }
+        .summary {
+            margin-top: 20px;
+            font-size: 1.2em;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+        }
     </style>
 </head>
 <body>
 
     <h1>Market-simulator <strong>市场模拟器</strong></h1>
     <hr>
-    <p class="description">This web is developed for calculating how many resources should prepare to product, including cost information.</p>
-    <p class="description">这个网站是为了计算应该准备生产多少资源和成本而开发的。</p>
+    <p class="description">This web is developed for calculating how many resources should prepare to product, including cost and profit margin information.</p>
+    <p class="description">这个网站是为了计算应该准备生产多少资源、成本及利润率而开发的。</p>
 
     <!-- 一级选项 -->
     <label for="primarySelect">请选择机器：</label>
@@ -87,6 +94,16 @@
         "黄油": { purchaseCost: 3, productionCost: 1 },
         "糖": { purchaseCost: 1.2, productionCost: 0.4 }
         // 其他原材料...
+    };
+
+    // 商品的销售价格
+    const productPrices = {
+        "啤酒": 30,
+        "威士忌": 50,
+        "菲力牛排": 80,
+        "面包": 15,
+        "曲奇饼干": 25
+        // 其他商品的销售价格...
     };
 
     // 商品对应的原材料及其数量
@@ -139,7 +156,7 @@
         }
     }
 
-    // 显示选定商品的原材料、数量、成本信息
+    // 显示选定商品的原材料、数量、成本、利润率信息
     document.getElementById('secondarySelect').addEventListener('change', function() {
         var selectedProduct = this.value;
         var resultArea = document.getElementById('resultArea');
@@ -147,9 +164,9 @@
         // 清空之前的结果
         resultArea.innerHTML = "";
 
-        // 检查是否有该商品的原材料数据
-        if (selectedProduct && materialsData[selectedProduct]) {
-            // 创建表格来显示原材料、数量、成本
+        // 检查是否有该商品的原材料数据和销售价格
+        if (selectedProduct && materialsData[selectedProduct] && productPrices[selectedProduct]) {
+            // 创建表格来显示原材料、数量、成本、利润率
             var tableHTML = "<h2>商品：" + selectedProduct + " 所需原材料及成本</h2>";
             tableHTML += "<table><tr><th>原材料</th><th>数量</th><th>购买成本</th><th>生产成本</th></tr>";
 
@@ -173,13 +190,26 @@
             tableHTML += "<tr><th colspan='2'>总计</th><th>" + totalPurchaseCost.toFixed(2) + "</th><th>" + totalProductionCost.toFixed(2) + "</th></tr>";
             tableHTML += "</table>";
 
-            // 将表格插入到页面中
+            // 获取商品的销售价格
+            var salesPrice = productPrices[selectedProduct];
+
+            // 计算利润率
+            var purchaseProfitMargin = ((salesPrice - totalPurchaseCost) / salesPrice * 100).toFixed(2);
+            var productionProfitMargin = ((salesPrice - totalProductionCost) / salesPrice * 100).toFixed(2);
+
+            // 显示销售价格和利润率
+            tableHTML += "<div class='summary'><strong>销售价格：</strong>¥" + salesPrice.toFixed(2) + "<br>";
+            tableHTML += "<strong>基于购买原材料的利润率：</strong>" + purchaseProfitMargin + "%<br>";
+            tableHTML += "<strong>基于生产原材料的利润率：</strong>" + productionProfitMargin + "%</div>";
+
+            // 将表格和总结部分插入到页面中
             resultArea.innerHTML = tableHTML;
         } else {
-            resultArea.innerHTML = "<p>没有找到该商品的原材料数据。</p>";
+            resultArea.innerHTML = "<p>没有找到该商品的原材料数据或销售价格。</p>";
         }
     });
 </script>
 
 </body>
 </html>
+

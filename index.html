@@ -34,34 +34,79 @@
     <h1>Market-simulator <strong>市场模拟器</strong></h1>
     <hr>
     <p class="description">This web is developed for calculating how many resources should prepare to product.</p>
-    <p class="description">这个网络是为了计算应该准备生产多少资源而开发的。</p>
+    <p class="description">这个网站是为了计算应该准备生产多少资源而开发的。</p>
 
 </body>
 </html>
 
 
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>下拉框示例</title>
+    <title>联动菜单示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }
+        select {
+            padding: 5px;
+            font-size: 1em;
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h2>请选择一个选项：</h2>
-    <select id="mySelect" onchange="showSelectedValue()">
-        <option value="">--请选择--</option>
-        <option value="option1">选项一</option>
-        <option value="option2">选项二</option>
-        <option value="option3">选项三</option>
-    </select>
-    <p id="result"></p>
-    <script>
-        function showSelectedValue() {
-            var select = document.getElementById("mySelect");
-            var value = select.value;
-            var text = select.options[select.selectedIndex].text;
-            document.getElementById("result").innerHTML = "你选择了：" + text + "（值：" + value + "）";
+
+<h1>选择一个一级选项</h1>
+
+<!-- 一级选项 -->
+<select id="primarySelect" onchange="updateSecondaryOptions()">
+    <option value="">--请选择--</option>
+    <option value="fruit">水果</option>
+    <option value="vehicle">交通工具</option>
+    <option value="animal">动物</option>
+</select>
+
+<!-- 二级选项 -->
+<select id="secondarySelect">
+    <option value="">--请选择--</option>
+</select>
+
+<script>
+    // 定义二级选项数据
+    const options = {
+        fruit: ["苹果", "香蕉", "橙子"],
+        vehicle: ["汽车", "自行车", "摩托车"],
+        animal: ["猫", "狗", "大象"]
+    };
+
+    // 根据一级选项更新二级选项的函数
+    function updateSecondaryOptions() {
+        // 获取一级选项和二级选项的下拉框元素
+        var primarySelect = document.getElementById("primarySelect");
+        var secondarySelect = document.getElementById("secondarySelect");
+
+        // 清空二级选项
+        secondarySelect.innerHTML = '<option value="">--请选择--</option>';
+
+        // 获取当前选中的一级选项的值
+        var selectedValue = primarySelect.value;
+
+        // 如果有对应的二级选项数据，则更新二级下拉框
+        if (selectedValue && options[selectedValue]) {
+            var subOptions = options[selectedValue];
+            // 动态添加二级选项
+            subOptions.forEach(function(option) {
+                var newOption = document.createElement("option");
+                newOption.value = option;
+                newOption.text = option;
+                secondarySelect.appendChild(newOption);
+            });
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>

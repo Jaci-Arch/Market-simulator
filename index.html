@@ -44,60 +44,65 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>联动菜单示例</title>
+    <title>商品选择器</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             font-size: 16px;
         }
         select {
-            padding: 5px;
+            padding: 10px;
             font-size: 1em;
-            margin-right: 10px;
+            margin-bottom: 20px;
+            width: 200px;
+        }
+        .result {
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
-<h1>选择一个一级选项</h1>
+<h1>选择商品和类型</h1>
 
 <!-- 一级选项 -->
+<label for="primarySelect">请选择机器：</label>
 <select id="primarySelect" onchange="updateSecondaryOptions()">
     <option value="">--请选择--</option>
-    <option value="fruit">水果</option>
-    <option value="vehicle">交通工具</option>
-    <option value="animal">动物</option>
+    <option value="brewing machinery">酿酒机</option>
+    <option value="meat slicer">切肉器</option>
+    <option value="oven">烤箱</option>
 </select>
 
 <!-- 二级选项 -->
+<label for="secondarySelect">请选择商品：</label>
 <select id="secondarySelect">
     <option value="">--请选择--</option>
 </select>
 
+<!-- 显示结果 -->
+<div class="result" id="resultArea"></div>
+
 <script>
-    // 定义二级选项数据
+    // 二级选项的数据
     const options = {
-        fruit: ["苹果", "香蕉", "橙子"],
-        vehicle: ["汽车", "自行车", "摩托车"],
-        animal: ["猫", "狗", "大象"]
+        "brewing machinery": ["啤酒", "威士忌", "葡萄", "香槟"],
+        "meat slicer": ["菲力牛排", "香肠", "发酵香肠", "汉堡肉", "条状牛排", "肋眼牛排", "肋排"],
+        "oven": ["面包", "曲奇饼干", "姜饼", "派", "椒盐卷饼", "草莓巧克力"]
     };
 
     // 根据一级选项更新二级选项的函数
     function updateSecondaryOptions() {
-        // 获取一级选项和二级选项的下拉框元素
         var primarySelect = document.getElementById("primarySelect");
         var secondarySelect = document.getElementById("secondarySelect");
+        var selectedValue = primarySelect.value;
 
         // 清空二级选项
         secondarySelect.innerHTML = '<option value="">--请选择--</option>';
 
-        // 获取当前选中的一级选项的值
-        var selectedValue = primarySelect.value;
-
         // 如果有对应的二级选项数据，则更新二级下拉框
         if (selectedValue && options[selectedValue]) {
             var subOptions = options[selectedValue];
-            // 动态添加二级选项
             subOptions.forEach(function(option) {
                 var newOption = document.createElement("option");
                 newOption.value = option;
@@ -106,7 +111,22 @@
             });
         }
     }
+
+    // 当选择商品时显示用户选择的结果
+    document.getElementById('secondarySelect').addEventListener('change', function() {
+        var selectedProduct = this.value;
+        var resultArea = document.getElementById('resultArea');
+        if (selectedProduct) {
+            resultArea.innerHTML = "<h2>你选择了：" + selectedProduct + "</h2>";
+        } else {
+            resultArea.innerHTML = "";
+        }
+    });
 </script>
+
+</body>
+</html>
+
 
 </body>
 </html>

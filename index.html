@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, initial-scale=1, maximum-scale=1"> <!-- 允许页面自适应缩放 -->
     <title>Market-simulator 市场模拟器</title>
     <style>
-        /* 页面布局和样式 */
         body {
             background-color: #f0f7ff; /* 页面背景 */
             font-family: Arial, sans-serif;
@@ -16,17 +15,17 @@
 
         .container {
             background-color: white;
-            padding: 20px; /* 调整了 padding，使其在小屏幕上更适应 */
+            padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
-            max-width: 90%; /* 使用百分比宽度，保证在不同屏幕下自适应 */
+            max-width: 90%;
             width: 100%;
-            margin: 40px auto; /* 页面上下居中 */
+            margin: 40px auto;
         }
 
         h1 {
-            font-size: 2em; /* 减小字体大小 */
+            font-size: 2em;
             margin-bottom: 10px;
             color: #333;
         }
@@ -39,13 +38,13 @@
         }
 
         p {
-            font-size: 1em; /* 调整字体大小 */
+            font-size: 1em;
             margin-bottom: 20px;
             color: #555;
         }
 
         label {
-            font-size: 1em; /* 调整字体大小 */
+            font-size: 1em;
             margin-bottom: 5px;
             display: block;
             text-align: left;
@@ -53,7 +52,7 @@
         }
 
         select {
-            width: 100%; /* 使用 100% 宽度以适应屏幕大小 */
+            width: 100%;
             padding: 10px;
             margin-bottom: 20px;
             border: 1px solid #ccc;
@@ -80,7 +79,7 @@
 
         .summary {
             margin-top: 20px;
-            font-size: 1.1em; /* 调整字体大小 */
+            font-size: 1.2em;
             padding: 10px;
             background-color: #f9f9f9;
             border: 1px solid #ccc;
@@ -99,61 +98,6 @@
 
         button:hover {
             background-color: #45a049;
-        }
-
-        /* 媒体查询：针对不同屏幕尺寸调整布局 */
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-                margin: 20px auto;
-            }
-
-            h1 {
-                font-size: 1.5em;
-            }
-
-            h2 {
-                font-size: 1.5em;
-            }
-
-            p {
-                font-size: 0.9em;
-            }
-
-            .summary {
-                font-size: 1em;
-            }
-
-            button {
-                font-size: 1em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 10px;
-            }
-
-            h1 {
-                font-size: 1.2em;
-            }
-
-            h2 {
-                font-size: 1.2em;
-            }
-
-            p {
-                font-size: 0.8em;
-            }
-
-            .summary {
-                font-size: 0.9em;
-            }
-
-            button {
-                font-size: 0.9em;
-                padding: 10px;
-            }
         }
 
     </style>
@@ -281,43 +225,54 @@
 
             // 生产每个商品所需的总成本
             let totalProductionCost = 0;
+            let totalPurchaseCost = 0; // 用于进货模式计算
 
-            // 遍历原材料数据，计算生产成本
+            // 遍历原材料数据，计算生产成本和购买成本
             materialsData[selectedProduct].forEach(function(item) {
                 var material = item.material;
                 var quantity = item.quantity;
                 var productionCost = materialsInfo[material].productionCost * quantity;
+                var purchaseCost = materialsInfo[material].purchaseCost * quantity;
 
                 totalProductionCost += productionCost;
+                totalPurchaseCost += purchaseCost;
             });
 
             // 由于每次生产产生 2 个商品，因此生产成本除以 2
-            totalProductionCost /= 2;
+            let costPerProductProduction = totalProductionCost / 2;
+            let costPerProductPurchase = totalPurchaseCost;  // 进货模式每次仅进货一个商品
 
             // 计算利润率
-            var productionProfitMargin = ((salesPrice - totalProductionCost) / salesPrice * 100).toFixed(2);
+            var productionProfitMargin = ((salesPrice - costPerProductProduction) / salesPrice * 100).toFixed(2);
+            var purchaseProfitMargin = ((salesPrice - costPerProductPurchase) / salesPrice * 100).toFixed(2);
             var wholesaleProfitMargin = ((salesPrice - wholesalePrice) / salesPrice * 100).toFixed(2);
 
-            // 创建表格来显示原材料、数量、成本
+            // 创建表格来显示原材料、数量、生产成本和进货成本
             var tableHTML = "<h2>商品：" + selectedProduct + " 所需原材料及成本</h2>";
-            tableHTML += "<table><tr><th>原材料</th><th>数量</th><th>生产成本</th></tr>";
+            tableHTML += "<table><tr><th>原材料</th><th>数量</th><th>生产成本</th><th>进货成本</th></tr>";
 
             // 遍历原材料并插入表格
             materialsData[selectedProduct].forEach(function(item) {
                 var material = item.material;
                 var quantity = item.quantity;
                 var productionCost = materialsInfo[material].productionCost * quantity;
-                tableHTML += "<tr><td>" + material + "</td><td>" + quantity + "</td><td>¥" + productionCost.toFixed(2) + "</td></tr>";
+                var purchaseCost = materialsInfo[material].purchaseCost * quantity;
+                tableHTML += "<tr><td>" + material + "</td><td>" + quantity + "</td><td>¥" + productionCost.toFixed(2) + "</td><td>¥" + purchaseCost.toFixed(2) + "</td></tr>";
             });
 
-            tableHTML += "<tr><th colspan='2'>总计</th><th>¥" + (totalProductionCost * 2).toFixed(2) + "</th></tr>"; // 显示生产 2 个的成本
+            tableHTML += "<tr><th colspan='2'>总计</th><th>¥" + totalProductionCost.toFixed(2) + "</th><th>¥" + totalPurchaseCost.toFixed(2) + "</th></tr>";
             tableHTML += "</table>";
 
-            // 显示销售价格和利润率信息
+            // 显示销售价格和利润率信息，分为生产模式和进货模式
             tableHTML += "<div class='summary'><strong>销售价格：</strong>¥" + salesPrice.toFixed(2) + "<br>";
-            tableHTML += "<strong>直接进货价：</strong>¥" + wholesalePrice.toFixed(2) + "<br>";
-            tableHTML += "<strong>基于生产模式的利润率：</strong>" + productionProfitMargin + "%<br>";
-            tableHTML += "<strong>基于进货模式的利润率：</strong>" + wholesaleProfitMargin + "%</div>";
+            tableHTML += "<strong>直接进货价：</strong>¥" + wholesalePrice.toFixed(2) + "<br><hr>";
+            tableHTML += "<h3>生产模式</h3>";
+            tableHTML += "<strong>基于生产模式的成本（每个商品）：</strong>¥" + costPerProductProduction.toFixed(2) + "<br>";
+            tableHTML += "<strong>基于生产模式的利润率：</strong>" + productionProfitMargin + "%<br><hr>";
+            tableHTML += "<h3>进货模式</h3>";
+            tableHTML += "<strong>基于进货模式的原材料成本（每个商品）：</strong>¥" + costPerProductPurchase.toFixed(2) + "<br>";
+            tableHTML += "<strong>基于原材料进货的利润率：</strong>" + purchaseProfitMargin + "%<br>";
+            tableHTML += "<strong>基于直接进货的利润率：</strong>" + wholesaleProfitMargin + "%</div>";
 
             // 将表格和总结部分插入到页面中
             resultArea.innerHTML = tableHTML;

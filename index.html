@@ -6,7 +6,7 @@
     <title>Market-simulator 市场模拟器</title>
     <style>
         body {
-            background-color: #f0f7ff; /* 页面背景 */
+            background-color: #f0f7ff;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -81,7 +81,20 @@
             margin-top: 20px;
             font-size: 1.2em;
             padding: 10px;
-            background-color: #f9f9f9;
+        }
+
+        .summary-1 {
+            background-color: #d9f2e6; /* 绿色背景 */
+            border: 1px solid #ccc;
+        }
+
+        .summary-2 {
+            background-color: #f2e6d9; /* 棕色背景 */
+            border: 1px solid #ccc;
+        }
+
+        .summary-3 {
+            background-color: #d9d9f2; /* 蓝色背景 */
             border: 1px solid #ccc;
         }
 
@@ -99,7 +112,6 @@
         button:hover {
             background-color: #45a049;
         }
-
     </style>
 </head>
 <body>
@@ -152,13 +164,13 @@
         "糖": { purchaseCost: 1.2, productionCost: 0.4 }
     };
 
-    // 商品的销售价格和进货价
+    // 商品的销售价格、进货价以及生产数量
     const productPrices = {
-        "啤酒": { salesPrice: 30, wholesalePrice: 22 },
-        "威士忌": { salesPrice: 50, wholesalePrice: 35 },
-        "菲力牛排": { salesPrice: 80, wholesalePrice: 60 },
-        "面包": { salesPrice: 15, wholesalePrice: 10 },
-        "曲奇饼干": { salesPrice: 25, wholesalePrice: 18 }
+        "啤酒": { salesPrice: 30, wholesalePrice: 22, productionQuantity: 4 },
+        "威士忌": { salesPrice: 50, wholesalePrice: 35, productionQuantity: 3 },
+        "菲力牛排": { salesPrice: 80, wholesalePrice: 60, productionQuantity: 2 },
+        "面包": { salesPrice: 15, wholesalePrice: 10, productionQuantity: 10 },
+        "曲奇饼干": { salesPrice: 25, wholesalePrice: 18, productionQuantity: 8 }
     };
 
     // 商品对应的原材料及其数量
@@ -222,6 +234,7 @@
         if (selectedProduct && materialsData[selectedProduct] && productPrices[selectedProduct]) {
             var salesPrice = productPrices[selectedProduct].salesPrice;
             var wholesalePrice = productPrices[selectedProduct].wholesalePrice;
+            var productionQuantity = productPrices[selectedProduct].productionQuantity;
 
             // 生产每个商品所需的总成本
             let totalProductionCost = 0;
@@ -238,8 +251,8 @@
                 totalPurchaseCost += purchaseCost;
             });
 
-            // 由于每次生产产生 2 个商品，因此生产成本除以 2
-            let costPerProductProduction = totalProductionCost / 2;
+            // 由于每次生产生成指定数量的商品，因此生产成本除以生产数量
+            let costPerProductProduction = totalProductionCost / productionQuantity;
             let costPerProductPurchase = totalPurchaseCost;  // 进货模式每次仅进货一个商品
 
             // 计算利润率
@@ -263,19 +276,21 @@
             tableHTML += "<tr><th colspan='2'>总计</th><th>¥" + totalProductionCost.toFixed(2) + "</th><th>¥" + totalPurchaseCost.toFixed(2) + "</th></tr>";
             tableHTML += "</table>";
 
-            // 显示销售价格和利润率信息，分为生产模式和进货模式
-            tableHTML += "<div class='summary'><strong>销售价格：</strong>¥" + salesPrice.toFixed(2) + "<br>";
-            tableHTML += "<strong>直接进货价：</strong>¥" + wholesalePrice.toFixed(2) + "<br><hr>";
-            tableHTML += "<h3>生产模式</h3>";
-            tableHTML += "<strong>基于生产模式的成本（每个商品）：</strong>¥" + costPerProductProduction.toFixed(2) + "<br>";
-            tableHTML += "<strong>基于生产模式的利润率：</strong>" + productionProfitMargin + "%<br><hr>";
-            tableHTML += "<h3>进货模式</h3>";
-            tableHTML += "<strong>基于进货模式的原材料成本（每个商品）：</strong>¥" + costPerProductPurchase.toFixed(2) + "<br>";
-            tableHTML += "<strong>基于原材料进货的利润率：</strong>" + purchaseProfitMargin + "%<br>";
-            tableHTML += "<strong>基于直接进货的利润率：</strong>" + wholesaleProfitMargin + "%</div>";
+            // 显示销售价格和利润率信息，分为生产模式和进货模式，使用不同的底色
+            var summaryHTML = "<div class='summary summary-1'><strong>销售价格：</strong>¥" + salesPrice.toFixed(2) + "<br>";
+            summaryHTML += "<strong>直接进货价：</strong>¥" + wholesalePrice.toFixed(2) + "</div><hr>";
+
+            summaryHTML += "<div class='summary summary-2'><h3>生产模式</h3>";
+            summaryHTML += "<strong>基于生产模式的成本（每个商品）：</strong>¥" + costPerProductProduction.toFixed(2) + "<br>";
+            summaryHTML += "<strong>基于生产模式的利润率：</strong>" + productionProfitMargin + "%</div><hr>";
+
+            summaryHTML += "<div class='summary summary-3'><h3>进货模式</h3>";
+            summaryHTML += "<strong>基于进货模式的原材料成本（每个商品）：</strong>¥" + costPerProductPurchase.toFixed(2) + "<br>";
+            summaryHTML += "<strong>基于原材料进货的利润率：</strong>" + purchaseProfitMargin + "%<br>";
+            summaryHTML += "<strong>基于直接进货的利润率：</strong>" + wholesaleProfitMargin + "%</div>";
 
             // 将表格和总结部分插入到页面中
-            resultArea.innerHTML = tableHTML;
+            resultArea.innerHTML = tableHTML + summaryHTML;
         } else {
             resultArea.innerHTML = "<p>没有找到该商品的原材料数据或销售价格。</p>";
         }

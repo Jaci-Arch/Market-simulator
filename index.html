@@ -27,38 +27,9 @@
             border-top: 1px solid #ccc;
             margin: 10px 0;
         }
-    </style>
-</head>
-<body>
-
-    <h1>Market-simulator <strong>市场模拟器</strong></h1>
-    <hr>
-    <p class="description">This web is developed for calculating how many resources should prepare to product.</p>
-    <p class="description">这个网站是为了计算应该准备生产多少资源而开发的。</p>
-
-</body>
-</html>
-
-
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-    <meta charset="UTF-8">
-    <title>商品选择器与原材料计算</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 16px;
-        }
-        select {
-            padding: 10px;
-            font-size: 1em;
-            margin-bottom: 20px;
-            width: 200px;
-        }
         table {
             border-collapse: collapse;
-            width: 50%;
+            width: 60%;
             margin-top: 20px;
         }
         th, td {
@@ -66,39 +37,59 @@
             padding: 10px;
             text-align: left;
         }
+        th {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
 
-<h1>选择商品和类型，查看所需原材料</h1>
+    <h1>Market-simulator <strong>市场模拟器</strong></h1>
+    <hr>
+    <p class="description">This web is developed for calculating how many resources should prepare to product, including cost information.</p>
+    <p class="description">这个网站是为了计算应该准备生产多少资源和成本而开发的。</p>
 
-<!-- 一级选项 -->
-<label for="primarySelect">请选择机器：</label>
-<select id="primarySelect" onchange="updateSecondaryOptions()">
-    <option value="">--请选择--</option>
-    <option value="brewing machinery">酿酒机</option>
-    <option value="meat slicer">切肉器</option>
-    <option value="oven">烤箱</option>
-</select>
+    <!-- 一级选项 -->
+    <label for="primarySelect">请选择机器：</label>
+    <select id="primarySelect" onchange="updateSecondaryOptions()">
+        <option value="">--请选择--</option>
+        <option value="brewing machinery">酿酒机</option>
+        <option value="meat slicer">切肉器</option>
+        <option value="oven">烤箱</option>
+    </select>
 
-<!-- 二级选项 -->
-<label for="secondarySelect">请选择商品：</label>
-<select id="secondarySelect">
-    <option value="">--请选择--</option>
-</select>
+    <!-- 二级选项 -->
+    <label for="secondarySelect">请选择商品：</label>
+    <select id="secondarySelect">
+        <option value="">--请选择--</option>
+    </select>
 
-<!-- 显示结果 -->
-<div id="resultArea"></div>
+    <!-- 显示结果 -->
+    <div id="resultArea"></div>
 
 <script>
-    // 二级选项数据
+    // 一级选项对应的二级选项
     const options = {
         "brewing machinery": ["啤酒", "威士忌", "葡萄酒", "香槟"],
         "meat slicer": ["菲力牛排", "香肠", "发酵香肠", "汉堡肉", "条状牛排", "肋眼牛排", "肋排"],
         "oven": ["面包", "曲奇饼干", "姜饼", "派", "椒盐卷饼", "草莓巧克力"]
     };
 
-    // 商品对应的原材料和数量
+    // 集中定义所有原材料的购买成本和生产成本
+    const materialsInfo = {
+        "麦芽": { purchaseCost: 2, productionCost: 1 },
+        "酵母": { purchaseCost: 1.5, productionCost: 0.5 },
+        "水": { purchaseCost: 0.1, productionCost: 0.05 },
+        "谷物": { purchaseCost: 3, productionCost: 1 },
+        "牛肉": { purchaseCost: 10, productionCost: 5 },
+        "调料": { purchaseCost: 1, productionCost: 0.2 },
+        "面粉": { purchaseCost: 2, productionCost: 0.5 },
+        "黄油": { purchaseCost: 3, productionCost: 1 },
+        "糖": { purchaseCost: 1.2, productionCost: 0.4 }
+        // 其他原材料...
+    };
+
+    // 商品对应的原材料及其数量
     const materialsData = {
         "啤酒": [
             { material: "麦芽", quantity: 5 },
@@ -110,84 +101,24 @@
             { material: "酵母", quantity: 2 },
             { material: "水", quantity: 8 }
         ],
-        "葡萄酒": [
-            { material: "谷物", quantity: 7 },
-            { material: "酵母", quantity: 2 },
-            { material: "水", quantity: 8 }
-        ],
-        "香槟": [
-            { material: "谷物", quantity: 7 },
-            { material: "酵母", quantity: 2 },
-            { material: "水", quantity: 8 }
-        ],
         "菲力牛排": [
             { material: "牛肉", quantity: 1 },
             { material: "调料", quantity: 0.1 }
         ],
-        "香肠": [
+        "面包": [
             { material: "面粉", quantity: 3 },
             { material: "酵母", quantity: 1 },
             { material: "水", quantity: 2 }
         ],
-        "发酵香肠": [
+        "曲奇饼干": [
             { material: "面粉", quantity: 2 },
             { material: "黄油", quantity: 1 },
             { material: "糖", quantity: 0.5 }
-        ],
-        "汉堡肉": [
-            { material: "面粉", quantity: 2 },
-            { material: "黄油", quantity: 1 },
-            { material: "糖", quantity: 0.5 }
-        ],
-         "条状牛排": [
-            { material: "面粉", quantity: 2 },
-            { material: "黄油", quantity: 1 },
-            { material: "糖", quantity: 0.5 }
-        ],
-         "肋眼牛排": [
-            { material: "面粉", quantity: 2 },
-            { material: "黄油", quantity: 1 },
-            { material: "糖", quantity: 0.5 }
-        ],
-         "肋排": [
-            { material: "面粉", quantity: 2 },
-            { material: "黄油", quantity: 1 },
-            { material: "糖", quantity: 0.5 }
-        ],
-         "面包": [
-            { material: "面粉", quantity: 2 },
-            { material: "黄油", quantity: 1 },
-            { material: "糖", quantity: 0.5 }
-        ],
-         "曲奇饼干": [
-            { material: "面粉", quantity: 2 },
-            { material: "黄油", quantity: 1 },
-            { material: "糖", quantity: 0.5 }
-        ],
-         "姜饼": [
-            { material: "面粉", quantity: 2 },
-            { material: "黄油", quantity: 1 },
-            { material: "糖", quantity: 0.5 }
-        ],
-         "派": [
-            { material: "面粉", quantity: 2 },
-            { material: "黄油", quantity: 1 },
-            { material: "糖", quantity: 0.5 }
-        ],
-         "椒盐卷饼": [
-            { material: "面粉", quantity: 2 },
-            { material: "黄油", quantity: 1 },
-            { material: "糖", quantity: 0.5 }
-        ],
-         "草莓巧克力": [
-            { material: "面粉", quantity: 2 },
-            { material: "黄油", quantity: 1 },
-            { material: "糖", quantity: 0.5 }
-        ],
-        // 添加其他商品的原材料和数量...
+        ]
+        // 其他商品数据...
     };
 
-    // 更新二级选项的函数
+    // 更新二级选项
     function updateSecondaryOptions() {
         var primarySelect = document.getElementById("primarySelect");
         var secondarySelect = document.getElementById("secondarySelect");
@@ -208,7 +139,7 @@
         }
     }
 
-    // 显示选定商品的原材料和数量
+    // 显示选定商品的原材料、数量、成本信息
     document.getElementById('secondarySelect').addEventListener('change', function() {
         var selectedProduct = this.value;
         var resultArea = document.getElementById('resultArea');
@@ -218,15 +149,28 @@
 
         // 检查是否有该商品的原材料数据
         if (selectedProduct && materialsData[selectedProduct]) {
-            // 创建表格来显示原材料和数量
-            var tableHTML = "<h2>商品：" + selectedProduct + " 所需原材料</h2>";
-            tableHTML += "<table><tr><th>原材料</th><th>数量</th></tr>";
+            // 创建表格来显示原材料、数量、成本
+            var tableHTML = "<h2>商品：" + selectedProduct + " 所需原材料及成本</h2>";
+            tableHTML += "<table><tr><th>原材料</th><th>数量</th><th>购买成本</th><th>生产成本</th></tr>";
+
+            // 总成本
+            let totalPurchaseCost = 0;
+            let totalProductionCost = 0;
 
             // 遍历该商品的原材料列表并添加到表格中
             materialsData[selectedProduct].forEach(function(item) {
-                tableHTML += "<tr><td>" + item.material + "</td><td>" + item.quantity + "</td></tr>";
+                var material = item.material;
+                var quantity = item.quantity;
+                var purchaseCost = materialsInfo[material].purchaseCost * quantity;
+                var productionCost = materialsInfo[material].productionCost * quantity;
+
+                totalPurchaseCost += purchaseCost;
+                totalProductionCost += productionCost;
+
+                tableHTML += "<tr><td>" + material + "</td><td>" + quantity + "</td><td>" + purchaseCost.toFixed(2) + "</td><td>" + productionCost.toFixed(2) + "</td></tr>";
             });
 
+            tableHTML += "<tr><th colspan='2'>总计</th><th>" + totalPurchaseCost.toFixed(2) + "</th><th>" + totalProductionCost.toFixed(2) + "</th></tr>";
             tableHTML += "</table>";
 
             // 将表格插入到页面中

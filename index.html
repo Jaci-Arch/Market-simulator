@@ -44,7 +44,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>商品选择器</title>
+    <title>商品选择器与原材料计算</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -56,14 +56,21 @@
             margin-bottom: 20px;
             width: 200px;
         }
-        .result {
+        table {
+            border-collapse: collapse;
+            width: 50%;
             margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 10px;
+            text-align: left;
         }
     </style>
 </head>
 <body>
 
-<h1>选择商品和类型</h1>
+<h1>选择商品和类型，查看所需原材料</h1>
 
 <!-- 一级选项 -->
 <label for="primarySelect">请选择机器：</label>
@@ -81,17 +88,106 @@
 </select>
 
 <!-- 显示结果 -->
-<div class="result" id="resultArea"></div>
+<div id="resultArea"></div>
 
 <script>
-    // 二级选项的数据
+    // 二级选项数据
     const options = {
-        "brewing machinery": ["啤酒", "威士忌", "葡萄", "香槟"],
+        "brewing machinery": ["啤酒", "威士忌", "葡萄酒", "香槟"],
         "meat slicer": ["菲力牛排", "香肠", "发酵香肠", "汉堡肉", "条状牛排", "肋眼牛排", "肋排"],
         "oven": ["面包", "曲奇饼干", "姜饼", "派", "椒盐卷饼", "草莓巧克力"]
     };
 
-    // 根据一级选项更新二级选项的函数
+    // 商品对应的原材料和数量
+    const materialsData = {
+        "啤酒": [
+            { material: "麦芽", quantity: 5 },
+            { material: "酵母", quantity: 1 },
+            { material: "水", quantity: 10 }
+        ],
+        "威士忌": [
+            { material: "谷物", quantity: 7 },
+            { material: "酵母", quantity: 2 },
+            { material: "水", quantity: 8 }
+        ],
+        "葡萄酒": [
+            { material: "谷物", quantity: 7 },
+            { material: "酵母", quantity: 2 },
+            { material: "水", quantity: 8 }
+        ],
+        "香槟": [
+            { material: "谷物", quantity: 7 },
+            { material: "酵母", quantity: 2 },
+            { material: "水", quantity: 8 }
+        ],
+        "菲力牛排": [
+            { material: "牛肉", quantity: 1 },
+            { material: "调料", quantity: 0.1 }
+        ],
+        "香肠": [
+            { material: "面粉", quantity: 3 },
+            { material: "酵母", quantity: 1 },
+            { material: "水", quantity: 2 }
+        ],
+        "发酵香肠": [
+            { material: "面粉", quantity: 2 },
+            { material: "黄油", quantity: 1 },
+            { material: "糖", quantity: 0.5 }
+        ],
+        "汉堡肉": [
+            { material: "面粉", quantity: 2 },
+            { material: "黄油", quantity: 1 },
+            { material: "糖", quantity: 0.5 }
+        ],
+         "条状牛排": [
+            { material: "面粉", quantity: 2 },
+            { material: "黄油", quantity: 1 },
+            { material: "糖", quantity: 0.5 }
+        ],
+         "肋眼牛排": [
+            { material: "面粉", quantity: 2 },
+            { material: "黄油", quantity: 1 },
+            { material: "糖", quantity: 0.5 }
+        ],
+         "肋排": [
+            { material: "面粉", quantity: 2 },
+            { material: "黄油", quantity: 1 },
+            { material: "糖", quantity: 0.5 }
+        ],
+         "面包": [
+            { material: "面粉", quantity: 2 },
+            { material: "黄油", quantity: 1 },
+            { material: "糖", quantity: 0.5 }
+        ],
+         "曲奇饼干": [
+            { material: "面粉", quantity: 2 },
+            { material: "黄油", quantity: 1 },
+            { material: "糖", quantity: 0.5 }
+        ],
+         "姜饼": [
+            { material: "面粉", quantity: 2 },
+            { material: "黄油", quantity: 1 },
+            { material: "糖", quantity: 0.5 }
+        ],
+         "派": [
+            { material: "面粉", quantity: 2 },
+            { material: "黄油", quantity: 1 },
+            { material: "糖", quantity: 0.5 }
+        ],
+         "椒盐卷饼": [
+            { material: "面粉", quantity: 2 },
+            { material: "黄油", quantity: 1 },
+            { material: "糖", quantity: 0.5 }
+        ],
+         "草莓巧克力": [
+            { material: "面粉", quantity: 2 },
+            { material: "黄油", quantity: 1 },
+            { material: "糖", quantity: 0.5 }
+        ],
+        // 添加其他商品的原材料和数量...
+    };
+
+    // 更新二级选项的函数
     function updateSecondaryOptions() {
         var primarySelect = document.getElementById("primarySelect");
         var secondarySelect = document.getElementById("secondarySelect");
@@ -112,21 +208,34 @@
         }
     }
 
-    // 当选择商品时显示用户选择的结果
+    // 显示选定商品的原材料和数量
     document.getElementById('secondarySelect').addEventListener('change', function() {
         var selectedProduct = this.value;
         var resultArea = document.getElementById('resultArea');
-        if (selectedProduct) {
-            resultArea.innerHTML = "<h2>你选择了：" + selectedProduct + "</h2>";
+
+        // 清空之前的结果
+        resultArea.innerHTML = "";
+
+        // 检查是否有该商品的原材料数据
+        if (selectedProduct && materialsData[selectedProduct]) {
+            // 创建表格来显示原材料和数量
+            var tableHTML = "<h2>商品：" + selectedProduct + " 所需原材料</h2>";
+            tableHTML += "<table><tr><th>原材料</th><th>数量</th></tr>";
+
+            // 遍历该商品的原材料列表并添加到表格中
+            materialsData[selectedProduct].forEach(function(item) {
+                tableHTML += "<tr><td>" + item.material + "</td><td>" + item.quantity + "</td></tr>";
+            });
+
+            tableHTML += "</table>";
+
+            // 将表格插入到页面中
+            resultArea.innerHTML = tableHTML;
         } else {
-            resultArea.innerHTML = "";
+            resultArea.innerHTML = "<p>没有找到该商品的原材料数据。</p>";
         }
     });
 </script>
-
-</body>
-</html>
-
 
 </body>
 </html>

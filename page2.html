@@ -6,14 +6,40 @@
     <title>Market-simulator 市场模拟器</title>
     <style>
         body {
-            background-color: #f0f7ff; /* 页面背景颜色 */
+            background-color: #f0f7ff;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* 左侧导航栏样式 */
+        .sidenav {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #333;
+            padding-top: 20px;
+        }
+
+        /* 导航栏中的链接 */
+        .sidenav a {
+            padding: 15px 20px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+
+        .sidenav a:hover {
+            background-color: #575757;
+        }
+
+        /* 主体内容 */
         .container {
+            margin-left: 220px; /* 给导航栏留出空间 */
             background-color: white;
             padding: 20px;
             border-radius: 10px;
@@ -21,7 +47,7 @@
             text-align: center;
             max-width: 90%;
             width: 100%;
-            margin: 40px auto;
+            margin-top: 40px;
         }
 
         h1 {
@@ -78,29 +104,12 @@
         }
 
         .summary {
-            margin-top: 10px; /* 增加顶部间距 */
-            margin-bottom: 20px; /* 增加底部间距 */
+            margin-top: 10px;
+            margin-bottom: 20px;
             font-size: 1.2em;
             padding: 20px;
-            background-color: white; /* 白色背景 */
-            border-radius: 10px; /* 添加圆角 */
-        }
-
-        .summary-1 {
-            border: 1px solid #ccc;
-            margin-top: 20px; /* 增加与表格的空隙 */
-        }
-
-        .summary-2 {
-            margin-top: 0px;  /* 删除顶部空白 */
-            margin-bottom: 20px; /* 控制底部空白 */
-            padding: 20px;
-        }
-
-        .summary-3 {
-            margin-top: 0px;  /* 删除顶部空白 */
-            margin-bottom: 20px; /* 控制底部空白 */
-            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
         }
 
         button {
@@ -112,7 +121,7 @@
             border-radius: 5px;
             font-size: 1.2em;
             cursor: pointer;
-            margin-top: 20px; /* 增加按钮和最后一个格子之间的空隙 */
+            margin-top: 20px;
         }
 
         button:hover {
@@ -122,186 +131,197 @@
 </head>
 <body>
 
-<div class="container">
-    <h1>Market-simulator <strong>市场模拟器</strong></h1>
-    <hr>
-    <p class="description">This web is developed for calculating how many resources should prepare to product, including cost and profit margin information.</p>
-    <p class="description">这个网站是为了计算应该准备生产多少资源、成本及利润率而开发的。</p>
+    <!-- 左侧导航栏 -->
+    <div class="sidenav">
+        <a href="index.html">主页</a>
+        <a href="#calculator">商品利润对比</a> <!-- 页面内跳转示例 -->
+        <a href="page2.html">资源计算器</a>
+        <a href="#about">关于</a> <!-- 页面内跳转示例 -->
+    </div>
 
-    <!-- 一级选项 -->
-    <label for="primarySelect">请选择机器：</label>
-    <select id="primarySelect" onchange="updateSecondaryOptions()">
-        <option value="">--请选择--</option>
-        <option value="brewing machinery">酿酒机</option>
-        <option value="meat slicer">切肉器</option>
-        <option value="oven">烤箱</option>
-    </select>
+    <!-- 主体内容 -->
+    <div class="container" id="calculator">
+        <h1>Market-simulator <strong>市场模拟器</strong></h1>
+        <hr>
+        <p class="description">This page is developed for calculating how many resources should prepare to product, including cost and profit margin information.</p>
+        <p class="description">这个页面是为了计算应该准备生产多少资源、成本及利润率而开发的。</p>
 
-    <!-- 二级选项 -->
-    <label for="secondarySelect">请选择商品：</label>
-    <select id="secondarySelect">
-        <option value="">--请选择--</option>
-    </select>
+        <!-- 一级选项 -->
+        <label for="primarySelect">请选择机器：</label>
+        <select id="primarySelect" onchange="updateSecondaryOptions()">
+            <option value="">--请选择--</option>
+            <option value="brewing machinery">酿酒机</option>
+            <option value="meat slicer">切肉器</option>
+            <option value="oven">烤箱</option>
+        </select>
 
-    <!-- 显示结果 -->
-    <div id="resultArea"></div>
+        <!-- 二级选项 -->
+        <label for="secondarySelect">请选择商品：</label>
+        <select id="secondarySelect">
+            <option value="">--请选择--</option>
+        </select>
 
-    <button onclick="calculateResults()">计算</button>
-</div>
+        <!-- 显示结果 -->
+        <div id="resultArea"></div>
 
-<script>
-    // 一级选项对应的二级选项
-    const options = {
-        "brewing machinery": ["啤酒", "威士忌", "葡萄酒", "香槟"],
-        "meat slicer": ["菲力牛排", "香肠", "发酵香肠", "汉堡肉", "条状牛排", "肋眼牛排", "肋排"],
-        "oven": ["面包", "曲奇饼干", "姜饼", "派", "椒盐卷饼", "草莓巧克力"]
-    };
+        <button onclick="calculateResults()">计算</button>
+    </div>
 
-    // 集中定义所有原材料的购买成本和生产成本
-    const materialsInfo = {
-        "麦芽": { purchaseCost: 2, productionCost: 1 },
-        "酵母": { purchaseCost: 1.5, productionCost: 0.5 },
-        "水": { purchaseCost: 0.1, productionCost: 0.05 },
-        "谷物": { purchaseCost: 3, productionCost: 1 },
-        "牛肉": { purchaseCost: 10, productionCost: 5 },
-        "调料": { purchaseCost: 1, productionCost: 0.2 },
-        "面粉": { purchaseCost: 2, productionCost: 0.5 },
-        "黄油": { purchaseCost: 3, productionCost: 1 },
-        "糖": { purchaseCost: 1.2, productionCost: 0.4 }
-    };
+    <script>
+        // 一级选项对应的二级选项
+        const options = {
+            "brewing machinery": ["啤酒", "威士忌", "葡萄酒", "香槟"],
+            "meat slicer": ["菲力牛排", "香肠", "发酵香肠", "汉堡肉", "条状牛排", "肋眼牛排", "肋排"],
+            "oven": ["面包", "曲奇饼干", "姜饼", "派", "椒盐卷饼", "草莓巧克力"]
+        };
 
-    // 商品的销售价格、进货价以及生产数量
-    const productPrices = {
-        "啤酒": { salesPrice: 30, wholesalePrice: 22, productionQuantity: 4 },
-        "威士忌": { salesPrice: 50, wholesalePrice: 35, productionQuantity: 3 },
-        "菲力牛排": { salesPrice: 80, wholesalePrice: 60, productionQuantity: 2 },
-        "面包": { salesPrice: 15, wholesalePrice: 10, productionQuantity: 10 },
-        "曲奇饼干": { salesPrice: 25, wholesalePrice: 18, productionQuantity: 8 }
-    };
+        // 集中定义所有原材料的购买成本和生产成本
+        const materialsInfo = {
+            "麦芽": { purchaseCost: 2, productionCost: 1 },
+            "酵母": { purchaseCost: 1.5, productionCost: 0.5 },
+            "水": { purchaseCost: 0.1, productionCost: 0.05 },
+            "谷物": { purchaseCost: 3, productionCost: 1 },
+            "牛肉": { purchaseCost: 10, productionCost: 5 },
+            "调料": { purchaseCost: 1, productionCost: 0.2 },
+            "面粉": { purchaseCost: 2, productionCost: 0.5 },
+            "黄油": { purchaseCost: 3, productionCost: 1 },
+            "糖": { purchaseCost: 1.2, productionCost: 0.4 }
+        };
 
-    // 商品对应的原材料及其数量
-    const materialsData = {
-        "啤酒": [
-            { material: "麦芽", quantity: 5 },
-            { material: "酵母", quantity: 1 },
-            { material: "水", quantity: 10 }
-        ],
-        "威士忌": [
-            { material: "谷物", quantity: 7 },
-            { material: "酵母", quantity: 2 },
-            { material: "水", quantity: 8 }
-        ],
-        "菲力牛排": [
-            { material: "牛肉", quantity: 1 },
-            { material: "调料", quantity: 0.1 }
-        ],
-        "面包": [
-            { material: "面粉", quantity: 3 },
-            { material: "酵母", quantity: 1 },
-            { material: "水", quantity: 2 }
-        ],
-        "曲奇饼干": [
-            { material: "面粉", quantity: 2 },
-            { material: "黄油", quantity: 1 },
-            { material: "糖", quantity: 0.5 }
-        ]
-    };
+        // 商品的销售价格、进货价以及生产数量
+        const productPrices = {
+            "啤酒": { salesPrice: 30, wholesalePrice: 22, productionQuantity: 4 },
+            "威士忌": { salesPrice: 50, wholesalePrice: 35, productionQuantity: 3 },
+            "菲力牛排": { salesPrice: 80, wholesalePrice: 60, productionQuantity: 2 },
+            "面包": { salesPrice: 15, wholesalePrice: 10, productionQuantity: 10 },
+            "曲奇饼干": { salesPrice: 25, wholesalePrice: 18, productionQuantity: 8 }
+        };
 
-    // 更新二级选项
-    function updateSecondaryOptions() {
-        var primarySelect = document.getElementById("primarySelect");
-        var secondarySelect = document.getElementById("secondarySelect");
-        var selectedValue = primarySelect.value;
+        // 商品对应的原材料及其数量
+        const materialsData = {
+            "啤酒": [
+                { material: "麦芽", quantity: 5 },
+                { material: "酵母", quantity: 1 },
+                { material: "水", quantity: 10 }
+            ],
+            "威士忌": [
+                { material: "谷物", quantity: 7 },
+                { material: "酵母", quantity: 2 },
+                { material: "水", quantity: 8 }
+            ],
+            "菲力牛排": [
+                { material: "牛肉", quantity: 1 },
+                { material: "调料", quantity: 0.1 }
+            ],
+            "面包": [
+                { material: "面粉", quantity: 3 },
+                { material: "酵母", quantity: 1 },
+                { material: "水", quantity: 2 }
+            ],
+            "曲奇饼干": [
+                { material: "面粉", quantity: 2 },
+                { material: "黄油", quantity: 1 },
+                { material: "糖", quantity: 0.5 }
+            ]
+        };
 
-        // 清空二级选项
-        secondarySelect.innerHTML = '<option value="">--请选择--</option>';
+        // 更新二级选项
+        function updateSecondaryOptions() {
+            var primarySelect = document.getElementById("primarySelect");
+            var secondarySelect = document.getElementById("secondarySelect");
+            var selectedValue = primarySelect.value;
 
-        // 如果有对应的二级选项数据，则更新二级下拉框
-        if (selectedValue && options[selectedValue]) {
-            var subOptions = options[selectedValue];
-            subOptions.forEach(function(option) {
-                var newOption = document.createElement("option");
-                newOption.value = option;
-                newOption.text = option;
-                secondarySelect.appendChild(newOption);
-            });
+            // 清空二级选项
+            secondarySelect.innerHTML = '<option value="">--请选择--</option>';
+
+            // 如果有对应的二级选项数据，则更新二级下拉框
+            if (selectedValue && options[selectedValue]) {
+                var subOptions = options[selectedValue];
+                subOptions.forEach(function(option) {
+                    var newOption = document.createElement("option");
+                    newOption.value = option;
+                    newOption.text = option;
+                    secondarySelect.appendChild(newOption);
+                });
+            }
         }
-    }
 
-    // 显示选定商品的原材料、数量、成本、利润率信息
-    function calculateResults() {
-        var selectedProduct = document.getElementById('secondarySelect').value;
-        var resultArea = document.getElementById('resultArea');
+        // 显示选定商品的原材料、数量、成本、利润率信息
+        function calculateResults() {
+            var selectedProduct = document.getElementById('secondarySelect').value;
+            var resultArea = document.getElementById('resultArea');
 
-        // 清空之前的结果
-        resultArea.innerHTML = "";
+            // 清空之前的结果
+            resultArea.innerHTML = "";
 
-        // 检查是否有该商品的原材料数据和销售价格
-        if (selectedProduct && materialsData[selectedProduct] && productPrices[selectedProduct]) {
-            var salesPrice = productPrices[selectedProduct].salesPrice;
-            var wholesalePrice = productPrices[selectedProduct].wholesalePrice;
-            var productionQuantity = productPrices[selectedProduct].productionQuantity;
+            // 检查是否有该商品的原材料数据和销售价格
+            if (selectedProduct && materialsData[selectedProduct] && productPrices[selectedProduct]) {
+                var salesPrice = productPrices[selectedProduct].salesPrice;
+                var wholesalePrice = productPrices[selectedProduct].wholesalePrice;
+                var productionQuantity = productPrices[selectedProduct].productionQuantity;
 
-            // 生产每个商品所需的总成本
-            let totalProductionCost = 0;
-            let totalPurchaseCost = 0; // 用于进货模式计算
+                // 生产每个商品所需的总成本
+                let totalProductionCost = 0;
+                let totalPurchaseCost = 0; // 用于进货模式计算
 
-            // 遍历原材料数据，计算生产成本和购买成本
-            materialsData[selectedProduct].forEach(function(item) {
-                var material = item.material;
-                var quantity = item.quantity;
-                var productionCost = materialsInfo[material].productionCost * quantity;
-                var purchaseCost = materialsInfo[material].purchaseCost * quantity;
+                // 遍历原材料数据，计算生产成本和购买成本
+                materialsData[selectedProduct].forEach(function(item) {
+                    var material = item.material;
+                    var quantity = item.quantity;
+                    var productionCost = materialsInfo[material].productionCost * quantity;
+                    var purchaseCost = materialsInfo[material].purchaseCost * quantity;
 
-                totalProductionCost += productionCost;
-                totalPurchaseCost += purchaseCost;
-            });
+                    totalProductionCost += productionCost;
+                    totalPurchaseCost += purchaseCost;
+                });
 
-            // 由于每次生产生成指定数量的商品，因此生产成本除以生产数量
-            let costPerProductProduction = totalProductionCost / productionQuantity;
-            let costPerProductPurchase = totalPurchaseCost;  // 进货模式每次仅进货一个商品
+                // 由于每次生产生成指定数量的商品，因此生产成本除以生产数量
+                let costPerProductProduction = totalProductionCost / productionQuantity;
+                let costPerProductPurchase = totalPurchaseCost;  // 进货模式每次仅进货一个商品
 
-            // 计算利润率
-            var productionProfitMargin = ((salesPrice - costPerProductProduction) / salesPrice * 100).toFixed(2);
-            var purchaseProfitMargin = ((salesPrice - costPerProductPurchase) / salesPrice * 100).toFixed(2);
-            var wholesaleProfitMargin = ((salesPrice - wholesalePrice) / salesPrice * 100).toFixed(2);
+                // 计算利润率
+                var productionProfitMargin = ((salesPrice - costPerProductProduction) / salesPrice * 100).toFixed(2);
+                var purchaseProfitMargin = ((salesPrice - costPerProductPurchase) / salesPrice * 100).toFixed(2);
+                var wholesaleProfitMargin = ((salesPrice - wholesalePrice) / salesPrice * 100).toFixed(2);
 
-            // 创建表格来显示原材料、数量、生产成本和进货成本
-            var tableHTML = "<h2>商品：" + selectedProduct + " 所需原材料及成本</h2>";
-            tableHTML += "<table><tr><th>原材料</th><th>数量</th><th>生产成本</th><th>进货成本</th></tr>";
+                // 创建表格来显示原材料、数量、生产成本和进货成本
+                var tableHTML = "<h2>商品：" + selectedProduct + " 所需原材料及成本</h2>";
+                tableHTML += "<table><tr><th>原材料</th><th>数量</th><th>生产成本</th><th>进货成本</th></tr>";
 
-            // 遍历原材料并插入表格
-            materialsData[selectedProduct].forEach(function(item) {
-                var material = item.material;
-                var quantity = item.quantity;
-                var productionCost = materialsInfo[material].productionCost * quantity;
-                var purchaseCost = materialsInfo[material].purchaseCost * quantity;
-                tableHTML += "<tr><td>" + material + "</td><td>" + quantity + "</td><td>¥" + productionCost.toFixed(2) + "</td><td>¥" + purchaseCost.toFixed(2) + "</td></tr>";
-            });
+                // 遍历原材料并插入表格
+                materialsData[selectedProduct].forEach(function(item) {
+                    var material = item.material;
+                    var quantity = item.quantity;
+                    var productionCost = materialsInfo[material].productionCost * quantity;
+                    var purchaseCost = materialsInfo[material].purchaseCost * quantity;
+                    tableHTML += "<tr><td>" + material + "</td><td>" + quantity + "</td><td>¥" + productionCost.toFixed(2) + "</td><td>¥" + purchaseCost.toFixed(2) + "</td></tr>";
+                });
 
-            tableHTML += "<tr><th colspan='2'>总计</th><th>¥" + totalProductionCost.toFixed(2) + "</th><th>¥" + totalPurchaseCost.toFixed(2) + "</th></tr>";
-            tableHTML += "</table>";
+                tableHTML += "<tr><th colspan='2'>总计</th><th>¥" + totalProductionCost.toFixed(2) + "</th><th>¥" + totalPurchaseCost.toFixed(2) + "</th></tr>";
+                tableHTML += "</table>";
 
-            // 显示销售价格和利润率信息，分为生产模式和进货模式，使用不同的背景颜色
-            var summaryHTML = "<div class='summary summary-1'><strong>销售价格：</strong>¥" + salesPrice.toFixed(2) + "<br>";
-            summaryHTML += "<strong>直接进货价：</strong>¥" + wholesalePrice.toFixed(2) + "</div><hr>";
+                // 显示销售价格和利润率信息，分为生产模式和进货模式
+                var summaryHTML = "<div class='summary summary-1'><strong>销售价格：</strong>¥" + salesPrice.toFixed(2) + "<br>";
+                summaryHTML += "<strong>直接进货价：</strong>¥" + wholesalePrice.toFixed(2) + "</div><hr>";
 
-            summaryHTML += "<div class='summary summary-2'><h3>生产模式</h3>";
-            summaryHTML += "<strong>基于生产模式的成本（每个商品）：</strong>¥" + costPerProductProduction.toFixed(2) + "<br>";
-            summaryHTML += "<strong>基于生产模式的利润率：</strong>" + productionProfitMargin + "%</div><hr>";
+                summaryHTML += "<div class='summary summary-2'><h3>生产模式</h3>";
+                summaryHTML += "<strong>基于生产模式的成本（每个商品）：</strong>¥" + costPerProductProduction.toFixed(2) + "<br>";
+                summaryHTML += "<strong>基于生产模式的利润率：</strong>" + productionProfitMargin + "%</div><hr>";
 
-            summaryHTML += "<div class='summary summary-3'><h3>进货模式</h3>";
-            summaryHTML += "<strong>基于进货模式的原材料成本（每个商品）：</strong>¥" + costPerProductPurchase.toFixed(2) + "<br>";
-            summaryHTML += "<strong>基于原材料进货的利润率：</strong>" + purchaseProfitMargin + "%<br>";
-            summaryHTML += "<strong>基于直接进货的利润率：</strong>" + wholesaleProfitMargin + "%</div>";
+                summaryHTML += "<div class='summary summary-3'><h3>进货模式</h3>";
+                summaryHTML += "<strong>基于进货模式的原材料成本（每个商品）：</strong>¥" + costPerProductPurchase.toFixed(2) + "<br>";
+                summaryHTML += "<strong>基于原材料进货的利润率：</strong>" + purchaseProfitMargin + "%<br>";
+                summaryHTML += "<strong>基于直接进货的利润率：</strong>" + wholesaleProfitMargin + "%</div>";
 
-            // 将表格和总结部分插入到页面中
-            resultArea.innerHTML = tableHTML + summaryHTML;
-        } else {
-            resultArea.innerHTML = "<p>没有找到该商品的原材料数据或销售价格。</p>";
+                // 将表格和总结部分插入到页面中
+                resultArea.innerHTML = tableHTML + summaryHTML;
+            } else {
+                resultArea.innerHTML = "<p>没有找到该商品的原材料数据或销售价格。</p>";
+            }
         }
-    }
-</script>
+    </script>
 
 </body>
 </html>
+
+                   

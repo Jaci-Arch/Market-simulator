@@ -1,4 +1,38 @@
-### Geographic Information
+To ensure that your `Jaci-Arch/Market-simulator` project runs smoothly, you need to install the necessary dependencies. Follow these steps:
+
+**Prerequisites**:
+
+* **Node.js and npm**: Ensure you have Node.js and npm installed on your machine. You can download and install them from [nodejs.org](https://nodejs.org/).
+
+**Installing Dependencies**:
+
+1. **Navigate to your project directory**: Open your terminal or command prompt and navigate to the root directory of your `Jaci-Arch/Market-simulator` project.
+
+2. **Install npm dependencies**: Run the following command to install all the required npm packages:
+
+```bash
+npm install
+```
+
+This command will download and install all the dependencies listed in your `package.json` file.
+
+**Optional Dependencies**:
+
+* **Development Tools**: If you plan to develop and contribute to the project, you may need additional tools such as:
+
+    * **Visual Studio Code**: A popular code editor with great support for JavaScript and React.
+    * **ESLint**: A tool that helps you write code that adheres to best practices.
+    * **React Developer Tools**: A browser extension that provides helpful debugging tools for React applications.
+
+**Verifying Installation**:
+
+To verify that the dependencies have been installed correctly, you can run the following command:
+
+```bash
+npm list
+```
+
+This command will display a list of all installed npm packages and their versions.### Geographic Information
 
 The `Jaci-Arch/Market-simulator` project incorporates geographic data to enhance its functionality and provide a more realistic financial market simulation. 
 

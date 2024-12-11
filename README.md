@@ -1,4 +1,45 @@
-### New Feature: Enhanced Project Documentation
+To ensure smooth operation of the Jaci-Arch/Market-simulator repository, please follow the steps below to properly configure your development environment:
+
+**1. Prerequisites**
+
+* **Node.js and npm**: Ensure you have Node.js and npm installed on your machine. You can download and install them from [nodejs.org](https://nodejs.org/).
+* **Visual Studio Code**: While not required, Visual Studio Code is recommended for development due to its powerful features and extensive ecosystem. You can download it from [code.visualstudio.com](https://code.visualstudio.com/).
+
+**2. Installing Dependencies**
+
+1. **Navigate to your project directory**: Open your terminal or command prompt and navigate to the root directory of your project. This is where the `package.json` file is located.
+
+2. **Install npm dependencies**: Run the following command to install all the required npm packages:
+
+```
+npm install
+```
+
+**3. Optional Dependencies**
+
+* **ESLint**: While not required, ESlint is a linter tool that can help identify and fix potential errors in your code. You can install it by running:
+
+```
+npm install eslint --save-dev
+```
+
+* **React Developer Tools**: If you are developing a React application, React Developer Tools is a helpful browser extension for debugging and analyzing React components.
+
+**4. Running the Application**
+
+Once all dependencies are installed, you can run the application using the following command:
+
+```
+npm start
+```
+
+This will start a development server and open your application in your default web browser.
+
+**5. Contributing to the Project**
+
+To contribute to the Jaci-Arch/Market-simulator repository, please follow the [contribution guidelines](https://github.com/Jaci-Arch/Market-simulator/blob/main/CONTRIBUTING.md). 
+
+By following these steps, you will have a properly configured development environment and be ready to contribute to the Jaci-Arch/Market-simulator repository!### New Feature: Enhanced Project Documentation
 
 The "Jaci-Arch/Market-simulator" repository has been updated with a significant enhancement: improved project documentation.
 

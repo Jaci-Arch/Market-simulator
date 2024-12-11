@@ -1,3 +1,24 @@
+### New Feature: Enhanced Project Documentation
+
+The "Jaci-Arch/Market-simulator" repository has been updated with a significant enhancement: improved project documentation.
+
+**Key Changes**:
+
+* **Expanded README.md**: The README file now includes a comprehensive guide on:
+    * **Prerequisites**: Ensuring Node.js and npm are installed.
+    * **Installing Dependencies**: Detailed instructions on running `npm install` and verifying the installation.
+    * **Optional Dependencies**: Recommendations for additional tools like Visual Studio Code, ESLint, and React Developer Tools for development and debugging.
+    * **Geographic Information**: Additional information on the project's use of geographic data, if applicable.
+* **Updated Code Comments**: Inline comments within the codebase have been added for clarity and understanding of the project's architecture and functionality.
+* **Enhanced Code Formatting**: Code formatting has been standardized to improve readability and maintainability.
+
+**Benefits**:
+
+* **Improved Onboarding**: The enhanced documentation makes it easier for new contributors to understand and contribute to the project.
+* **Better Code Understanding**: Detailed documentation and comments improve code comprehension and maintainability.
+* **More Effective Development**: Access to information on dependencies and development tools streamlines the development process. 
+
+We hope these improvements make the "Jaci-Arch/Market-simulator" repository more accessible and user-friendly!
 To ensure that your `Jaci-Arch/Market-simulator` project runs smoothly, you need to install the necessary dependencies. Follow these steps:
 
 **Prerequisites**:

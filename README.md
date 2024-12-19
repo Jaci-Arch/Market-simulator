@@ -1,3 +1,10 @@
+To effectively utilize the Market-simulator, the intended target user should possess the following characteristics:
+
+* **Technical Proficiency**: The user should have a basic understanding of software development concepts, including familiarity with JavaScript, HTML, and CSS. 
+* **Knowledge of Financial Markets**: Understanding of financial markets, including concepts like stocks, bonds, and options, is beneficial. 
+* **Experience with JavaScript Frameworks**: Experience with JavaScript frameworks like React is highly recommended for building and customizing the Market-simulator.
+* **Interest in Simulations**: The user should have an interest in simulating financial markets and exploring different trading strategies. 
+* **Problem-Solving Skills**: The ability to troubleshoot issues and adapt to new challenges is crucial for successful usage.
 To ensure smooth operation of the Jaci-Arch/Market-simulator repository, please follow the steps below to properly configure your development environment:
 
 **1. Prerequisites**

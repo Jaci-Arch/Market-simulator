@@ -1,3 +1,9 @@
+The target user for the Market-simulator should possess the following characteristics:
+
+* **Technical Proficiency**: Basic understanding of software development concepts, including JavaScript, HTML, and CSS. Familiarity with JavaScript frameworks like React is highly recommended.
+* **Knowledge of Financial Markets**: Understanding of financial markets, including concepts like stocks, bonds, and options. 
+* **Interest in Simulations**: Curiosity and enthusiasm for simulating financial markets and exploring different trading strategies.
+* **Problem-Solving Skills**: Ability to troubleshoot issues and adapt to new challenges.
 To effectively utilize the Market-simulator, the intended target user should possess the following characteristics:
 
 * **Technical Proficiency**: The user should have a basic understanding of software development concepts, including familiarity with JavaScript, HTML, and CSS. 

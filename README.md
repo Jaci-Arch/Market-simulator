@@ -1,4 +1,3 @@
-test
 The target user for the Market-simulator should possess the following characteristics:
 
 * **Technical Proficiency**: Basic understanding of software development concepts, including JavaScript, HTML, and CSS. Familiarity with JavaScript frameworks like React is highly recommended.

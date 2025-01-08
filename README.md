@@ -1,3 +1,4 @@
+This repository, "Jaci-Arch/Market-simulator," is licensed under the MIT License. Please refer to the LICENSE file for details.
 test
 The target user for the Market-simulator should possess the following characteristics:
 

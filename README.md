@@ -1,4 +1,14 @@
-The Jaci-Arch/Market-simulator project has released two versions so far:
+## Configuration Instructions
+
+This section provides detailed instructions on how to configure the Jaci-Arch/Market-simulator project. It covers various aspects such as:
+
+* **Prerequisites**: List any software or libraries required for the project to run.
+* **Installation**: Provide step-by-step instructions on how to install the project, including any dependencies.
+* **Configuration Files**: Explain the purpose and usage of any configuration files, and provide examples if necessary.
+* **Environment Variables**: Describe any environment variables used by the project and their respective purposes.
+* **Running the Project**: Outline the steps required to run the project, including any command-line arguments or flags.
+* **Troubleshooting**: Offer solutions to common issues encountered during configuration or operation.
+```The Jaci-Arch/Market-simulator project has released two versions so far:
 
 **Version 1.0 (8cd4c36**)
 *   Released on January 8, 2025 at 06:48 AM.
